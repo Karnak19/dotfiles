@@ -1,17 +1,21 @@
 # Writing a project's `qa` skill
 
-The generic skill holds the method; the project skill holds the values. Write one
-when a repo deviates from the defaults in `SKILL.md` — which in practice is every
-repo with auth or a dev server on a non-obvious port.
+This skill is a seed, not a runtime dependency. Which of the two shapes a project
+gets depends on who has to run it.
 
-Put it at `.claude/skills/qa/SKILL.md` in the project. For a team repo, vendor the
-generic skill in alongside it (`.claude/skills/qa-generic/` or wherever the project
-keeps them) so teammates do not need a machine-local install, and point at that
-copy instead of the installed one.
+**A repo other people clone: standalone.** Copy the method into
+`.claude/skills/qa/SKILL.md` and edit it down to this project — its values inline,
+its traps, nothing generic left over. A teammate must get a working skill from the
+clone alone; a project skill that reads "see the generic skill" is broken for
+everyone who never installed it. The two copies then drift, and that is the right
+trade: a stale sentence is cheaper than a skill that does not load.
 
-Keep it to a settings table plus the traps that are genuinely specific to this
-codebase. Anything that would be true of another app belongs upstream in the
-generic skill, not here.
+**A repo only you work in: a settings file.** Point at the installed copy
+(`~/.agents/skills/qa/SKILL.md`) and override only what differs. Fixes upstream
+reach it for free.
+
+Either way, write down the values below — with a standalone copy they replace the
+Settings block; with a settings file they are the whole file.
 
 ````markdown
 ---
@@ -21,7 +25,8 @@ description: Drive a <project> change through the running app and bring back evi
 
 # QA — <project>
 
-Per-repo settings for the `qa` skill. Read `<path-to-generic>/SKILL.md` and run its
+Per-repo settings for the `qa` skill (settings-file shape — a standalone copy inlines
+these instead). Read `~/.agents/skills/qa/SKILL.md` and run its
 procedure with these values:
 
 | Setting | Value |
