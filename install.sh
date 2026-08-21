@@ -4,7 +4,7 @@
 set -e
 cd "$(dirname "$0")"
 mkdir -p "$HOME/.agents/skills"
-for src in "$PWD"/agents/skills/*/; do
+for src in "$PWD"/skills/*/; do
   name=$(basename "$src")
   dst="$HOME/.agents/skills/$name"
   if [ -e "$dst" ] && [ ! -L "$dst" ]; then

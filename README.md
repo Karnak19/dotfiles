@@ -4,7 +4,7 @@ Config I want on every machine.
 
 ## Agent skills
 
-`agents/skills/` holds the skills I wrote myself. Claude Code and other agents
+`skills/` holds the skills I wrote myself. Claude Code and other agents
 read them from `~/.agents/skills`, so `./install.sh` symlinks them there.
 
 ```sh
