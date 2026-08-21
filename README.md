@@ -2,13 +2,13 @@
 
 Config I want on every machine.
 
-## Agent skills
+## Skills
 
-`skills/` holds the skills I wrote myself. Claude Code and other agents
-read them from `~/.agents/skills`, so `./install.sh` symlinks them there.
+`skills/` holds the agent skills I wrote myself.
 
 ```sh
-./install.sh
+bunx skills add Karnak19/dotfiles -g --all
 ```
 
-Third-party skills installed by a package manager are not tracked here.
+On the machine where I edit them, `~/.agents/skills/<name>` is a symlink
+straight into this repo instead, so changes are live.
