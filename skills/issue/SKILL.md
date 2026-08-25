@@ -7,9 +7,17 @@ description: Create or improve a GitHub issue when the user asks for a feature, 
 
 An issue is a small product and engineering brief, not a sentence describing a future task. It should let someone implement the work without rediscovering the product problem, the existing design decisions, or the dangerous edge cases.
 
-Generic and GitHub-scoped. **Per-project settings live in a reference file** — [`references/fitcrew.md`](references/fitcrew.md) for fitcrew. Load the matching one first when it exists; it carries the repo, the title prefixes, the heading language and the stack-specific checks. A project may instead ship its own `issue` skill (`.claude/skills/issue/`) — that wins over anything here.
+Generic and GitHub-scoped. **Per-project settings live in the project's own `issue` skill** (`.claude/skills/issue/` or `.agents/skills/issue/`) — when a project has one, load it first and use its values wherever they differ from the defaults below. Keep another project's specifics out of this skill.
 
-Derive `owner/repo` from `git remote get-url origin` unless a reference file names it.
+## Settings
+
+Defaults; a project's own `issue` skill overrides them.
+
+- owner/repo — derived from `git remote get-url origin`
+- title prefixes — `feat:` / `fix:` / `chore:`
+- heading language — English
+- priority labels — none; skip the priority step if the repo has no scheme
+- project board — none; skip the board step if the repo has no board
 
 ## Workflow
 
