@@ -21,6 +21,8 @@ Defaults; a project's `pr` skill overrides them. No project skill yet? Creating 
 
 - Branch name: `<your-github-handle>/<lowercase-hyphenated>` (`gh api user --jq .login` for the handle). Assign the issue: `gh issue edit <n> --add-assignee @me`.
 - The project's build green, per its AGENTS.md — the build is the bar. Typecheck and lint passing is not enough. Run the project's self-checks touched by the change.
+- **A new check must fail on the unfixed code.** Run it against the pre-fix state and watch it go red before you trust it. A check that passes whether or not the bug exists is worse than no check: it makes the next person confident the class is covered. Both directions matter — one shipped check omitted a backslash from its payload, so it passed on a vulnerable dependency *and* would have false-failed once the dependency was fixed.
+- **When the fix leans on a library's behaviour, read the installed version, not the docs.** Check `node_modules` (or the lockfile's resolved version). A parameterised query builder that looked correct escaped `'` but not `\` in the version actually installed, so the "fix" was still injectable; the root cause was a version bump, and only the installed source showed it.
 
 ## 2. Screenshots
 
@@ -64,7 +66,13 @@ Reference in the body:
 
 ## 3. Body
 
+**First line is `Closes #<n>`** (or `Fixes`/`Resolves`). It is not decoration: it populates the issue's timeline, and on a GitHub Project board it fills the `Linked pull requests` field, which is what lets a board be read without opening the PRs page. A PR whose issue link is only prose leaves the board blind.
+
 What changed and why, in the shape the reviewer can check against the diff (an inaccurate description gets called out). Screenshots under a dedicated heading (fitcrew uses `## Écrans`). `gh pr create --fill` then edit, or `--body-file`.
+
+**Declare any file outside the stated scope, in its own section, with why.** An unannounced out-of-scope file is the cheapest way to burn a review round — worst of all in a security PR, where a reviewer has to work out whether the extra file is part of the fix or an accident. Coupled changes are often legitimate (sanitising an error is pointless if it is routed into a monitor that silently drops it); say that rather than hoping nobody notices.
+
+Say plainly which acceptance criteria you could **not** verify, and why. "Could not exercise a refund: the only credentials available are live" is useful. Silence reads as tested.
 
 ## 4. The review loop
 
@@ -84,6 +92,14 @@ done
 gh pr view <n> --json reviews --jq '.reviews[-1].body'
 gh api repos/<owner>/<repo>/pulls/<n>/comments --jq '.[]|{id,path,line,body}'
 ```
+
+**A red check is a claim too.** Before debugging it, confirm the failure is yours: read the failing job and check whether the failing tests touch files in your diff. Suites that stand up databases, seed fixtures or drive browsers fail for environmental reasons, and a project's AGENTS.md often names its known flakes. Rerun the failed jobs first:
+
+```sh
+gh run rerun <run-id> --failed
+```
+
+If the same tests fail again, say so — but **never debug CI infrastructure from inside a feature PR**. That is a separate change with a separate reviewer, and a feature branch is the worst place to discover it.
 
 **Verify each finding against the code before acting on it.** Review bots run on mid-tier models picked for price/performance — they hallucinate. They cite lines that don't exist, claim a function is unused when a caller is two files over, and misread control flow. Open the file it names, confirm the claim is true at that line, and only then decide. A finding is a hypothesis, not a defect report.
 
@@ -107,6 +123,15 @@ Then one summary comment stating what was fixed and in which commit — a table 
 Pushing triggers a new review → back to the top of this section. Cap at **3 rounds**; if round 3 still has blocking findings, stop and bring it to the author instead of looping.
 
 Done when the bot is `APPROVED`, or when the only open findings are nits you deliberately declined and replied to.
+
+**Approval is not the same as no open threads, and green CI is not the same as ready.** A bot can approve while inline threads it opened are still unresolved, and checks pass on fixes that do not work. List the unresolved threads and account for every one before calling it done:
+
+```sh
+gh api graphql -f query='{repository(owner:"<owner>",name:"<repo>"){pullRequest(number:<n>){
+  reviewThreads(first:50){nodes{isResolved path line comments(first:1){nodes{author{login} body}}}}}}}'
+```
+
+Resolve what you fixed, reply to what you declined, leave nothing silently open.
 
 **No review bot configured** (the default): the same gate is CI checks + human review — wait for checks, apply the same triage to human comments, and treat approval as done.
 
