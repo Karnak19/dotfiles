@@ -16,6 +16,7 @@ Defaults; a project's `pr` skill overrides them. No project skill yet? Creating 
 - review bot — GitHub App login that reviews on push; default **none** (fall back to CI + human review)
 - merge style — default **squash**
 - owner/repo — derived from `git remote get-url origin`
+- project board — the project number the repo's issues sit on, and the name of its status field; default **none** (skip §5 entirely)
 
 ## 1. Before opening
 
@@ -135,6 +136,32 @@ Resolve what you fixed, reply to what you declined, leave nothing silently open.
 
 **No review bot configured** (the default): the same gate is CI checks + human review — wait for checks, apply the same triage to human comments, and treat approval as done.
 
-## 5. Merge
+## 5. Board status
+
+Only when the project has a board (`project board` set). **Keeping it current is yours, not a background job's** — you know your own state exactly, at the moment it changes, which no poller does.
+
+Set the linked issue's status twice:
+
+- **when you open the PR** → the "work in flight" value (`In review`)
+- **when the review loop ends green and only a merge is left** → the "waiting on a human" value (`Blocked`)
+
+```sh
+PROJ=<project-number>; OWNER=<owner>
+# item id for the issue this PR closes
+gh project item-list $PROJ --owner $OWNER --format json   | jq -r '.items[] | select(.content.number==<issue>) | .id'
+gh project item-edit --id <item-id> --project-id <project-id>   --field-id <status-field-id> --single-select-option-id <option-id>
+```
+
+Field and option ids come from `gh project field-list $PROJ --owner $OWNER --format json`.
+
+Needs the `project` scope on the token. If the call fails on scope, **say so in your report** — do not skip it silently; a board nobody updates is worse than no board, because it looks current.
+
+Two things you must not do: never invent a status value that is not already an option, and never touch an issue your PR does not close.
+
+This is also why the first body line matters (§3): the board reads the PR through that link.
+
+**A dead agent cannot report its own death**, so do not rely on any status meaning "stalled" — nothing sets it when an agent is working alone. Read it from data instead: an item still in the in-flight value with an old `Updated` timestamp is a stalled agent. A view filtered to the in-flight values and sorted by `Updated` oldest-first is the stalled list, and it stays true whether or not anyone remembered to write a status.
+
+## 6. Merge
 
 Squash only (the ruleset allows nothing else). `gh pr merge <n> --squash --delete-branch` once approved — ask the author first unless they already said to merge.
