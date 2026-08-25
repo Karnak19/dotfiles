@@ -158,7 +158,9 @@ Needs the `project` scope on the token. If the call fails on scope, **say so in 
 
 Two things you must not do: never invent a status value that is not already an option, and never touch an issue your PR does not close.
 
-This is also why the first body line matters (§3): the board reads the PR through that link. And it removes the need for a poller — an item left in `In review` with an old `Updated` timestamp is a stalled agent, visible by sorting. Marking a dead worker `Stale` belongs to whoever is driving the fleet, since a dead agent cannot report its own death.
+This is also why the first body line matters (§3): the board reads the PR through that link.
+
+**A dead agent cannot report its own death**, so do not rely on any status meaning "stalled" — nothing sets it when an agent is working alone. Read it from data instead: an item still in the in-flight value with an old `Updated` timestamp is a stalled agent. A view filtered to the in-flight values and sorted by `Updated` oldest-first is the stalled list, and it stays true whether or not anyone remembered to write a status.
 
 ## 6. Merge
 
