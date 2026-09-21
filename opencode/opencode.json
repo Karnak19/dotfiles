@@ -1,0 +1,30 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "zai-coding-plan/glm-5.3",
+  "disabled_providers": [
+    "github-copilot"
+  ],
+  "formatter": true,
+  "websearch": {
+    "provider": "random"
+  },
+  "mcp": {
+    "cloudflare-api": {
+      "enabled": true,
+      "type": "remote",
+      "url": "https://mcp.cloudflare.com/mcp"
+    }
+  },
+  "plugins": [
+    "oh-my-opencode-slim"
+  ],
+  "agent": {
+    "explore": {
+      "disable": true
+    },
+    "general": {
+      "disable": true
+    }
+  },
+  "lsp": true
+}
