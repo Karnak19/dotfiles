@@ -159,7 +159,8 @@
       },
       "explorer": {
         "model": [
-          "opencode-go/mimo-v2.5",
+          "opencode/mimo-v2.6-flash-free",
+          "opencode-go/mimo-v2.6-flash",
           {
             "id": "opencode-go/deepseek-v4.1-flash",
             "variant": "low"
@@ -170,7 +171,8 @@
       },
       "librarian": {
         "model": [
-          "opencode-go/mimo-v2.5",
+          "opencode/mimo-v2.6-flash-free",
+          "opencode-go/mimo-v2.6-flash",
           {
             "id": "opencode-go/deepseek-v4.1-flash",
             "variant": "low"
@@ -201,7 +203,10 @@
         "mcps": []
       },
       "observer": {
-        "model": "opencode-go/mimo-v2.5",
+        "model": [
+          "opencode/mimo-v2.6-flash-free",
+          "opencode-go/mimo-v2.6-flash"
+        ],
         "skills": [],
         "mcps": []
       }
