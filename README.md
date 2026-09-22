@@ -20,7 +20,6 @@ ln -s "$PWD/opencode/opencode.json" ~/.config/opencode/opencode.json
 ln -s "$PWD/opencode/oh-my-opencode-slim.json" ~/.config/opencode/oh-my-opencode-slim.json
 ln -s "$PWD/opencode/tui.json" ~/.config/opencode/tui.json
 ln -s "$PWD/opencode/cli.json" ~/.config/opencode/cli.json
-ln -s "$PWD/opencode/agent" ~/.config/opencode/agent
 ln -s "$PWD/AGENTS.md" ~/.config/opencode/AGENTS.md
 ```
 
