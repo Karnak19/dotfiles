@@ -15,3 +15,12 @@ Before writing code, stop at the first rung that holds:
 - Fix root causes, not symptoms: check every caller of the function you touch.
 
 Never simplify away: understanding the problem, input validation at trust boundaries, error handling that prevents data loss, security, accessibility basics, or anything explicitly requested.
+
+# Cloudflare
+
+When interacting with Cloudflare, use the `cf` CLI unless the project has a Wrangler configuration file.
+
+- Find the command first: `cf cli search "<task>"` (quote the whole task). Then `cf schema <product> <command>` for the request shape, or `<command> --help`.
+- Preview with `--dry-run` before running for real.
+- Deletes without `--force` print `Aborted.` and still exit 0, so exit 0 doesn't prove a delete happened.
+- Docs: `cf docs search "<topic>"`.
