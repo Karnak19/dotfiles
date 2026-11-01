@@ -12,14 +12,14 @@
     "servers": {
       "coolify": {
         "type": "remote",
-        "url": "https://coolify.vernouillet.dev/mcp",
+        "url": "{env:COOLIFY_MCP_URL}",
         "headers": {
           "Authorization": "Bearer {env:COOLIFY_API_TOKEN}"
         }
       },
       "rustrak": {
         "type": "remote",
-        "url": "https://rustrack.bazlab.si/mcp",
+        "url": "{env:RUSTRAK_MCP_URL}",
         "headers": {
           "Authorization": "Bearer {env:RUSTRAK_API_TOKEN}"
         }
