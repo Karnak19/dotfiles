@@ -9,14 +9,31 @@
     "provider": "random"
   },
   "mcp": {
-    "cloudflare-api": {
-      "enabled": true,
-      "type": "remote",
-      "url": "https://mcp.cloudflare.com/mcp"
+    "servers": {
+      "coolify": {
+        "type": "remote",
+        "url": "https://coolify.vernouillet.dev/mcp",
+        "headers": {
+          "Authorization": "Bearer {env:COOLIFY_API_TOKEN}"
+        }
+      },
+      "rustrak": {
+        "type": "local",
+        "command": [
+          "npx",
+          "-y",
+          "@rustrak/mcp"
+        ],
+        "environment": {
+          "RUSTRAK_API_URL": "https://rustrack.bazlab.si",
+          "RUSTRAK_API_TOKEN": "{env:RUSTRAK_API_TOKEN}"
+        }
+      }
     }
   },
   "plugins": [
-    "oh-my-opencode-slim"
+    "oh-my-opencode-slim",
+    "file:///Users/basilevernouillet/.config/opencode/plugins/session-dashboard"
   ],
   "agent": {
     "explore": {

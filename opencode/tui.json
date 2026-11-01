@@ -1,5 +1,6 @@
 {
   "plugin": [
-    "oh-my-opencode-slim"
+    "oh-my-opencode-slim",
+    "file:///Users/basilevernouillet/.config/opencode/plugins/orca-opencode-status-tui/tui.js"
   ]
 }
