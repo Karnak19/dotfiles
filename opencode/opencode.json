@@ -12,16 +12,16 @@
     "servers": {
       "coolify": {
         "type": "remote",
-        "url": "{env:COOLIFY_MCP_URL}",
+        "url": "{file:~/.config/opencode/secrets/coolify-url.env}",
         "headers": {
-          "Authorization": "Bearer {env:COOLIFY_API_TOKEN}"
+          "Authorization": "Bearer {file:~/.config/opencode/secrets/coolify-token.env}"
         }
       },
       "rustrak": {
         "type": "remote",
-        "url": "{env:RUSTRAK_MCP_URL}",
+        "url": "{file:~/.config/opencode/secrets/rustrak-url.env}",
         "headers": {
-          "Authorization": "Bearer {env:RUSTRAK_API_TOKEN}"
+          "Authorization": "Bearer {file:~/.config/opencode/secrets/rustrak-token.env}"
         }
       }
     }
