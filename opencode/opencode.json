@@ -1,6 +1,6 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "model": "zai-coding-plan/glm-5.3",
+  "model": "console-z-ai/glm-5.3",
   "disabled_providers": [
     "github-copilot"
   ],
